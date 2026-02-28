@@ -115,6 +115,9 @@ const App: React.FC = () => {
   const [showRules, setShowRules] = useState(false);
   const [spinCounter, setSpinCounter] = useState(0);
 
+  // Stable callback for reel stops
+  const handleReelStop = useCallback(() => { }, []);
+
   // Win Evaluation Logic
   const evaluateGrid = useCallback((currentGrid: SymbolId[][], currentBet: number) => {
     const wins: WinLine[] = [];
@@ -190,9 +193,12 @@ const App: React.FC = () => {
     const finalGrid = nextGrid;
     const { wins, totalWin } = result;
 
-    // Animation delay
+    // Immediately pass finalGrid to children so they know their final targets.
+    // Reel internal state will just blurs and randomizes until spinDelay finishes.
+    setGrid(finalGrid);
+
+    // Animation delay for the "end of spin" accounting
     setTimeout(async () => {
-      setGrid(finalGrid);
       setIsSpinning(false);
       setSpinCounter(prev => prev + 1);
 
@@ -295,7 +301,7 @@ const App: React.FC = () => {
                       symbolId={symbolId}
                       isSpinning={isSpinning}
                       spinDelay={1000 + (cIndex * 300)}
-                      onStop={() => { }}
+                      onStop={handleReelStop}
                       highlight={isHighlighted(rIndex, cIndex)}
                     />
                   ))}

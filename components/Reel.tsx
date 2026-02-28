@@ -43,7 +43,7 @@ const Reel: React.FC<ReelProps> = ({ symbolId, isSpinning, spinDelay, onStop, hi
         // Or parent passes the target symbol.
         // In this implementation: Parent generates grid, sets isSpinning=true. 
         // We should wait `spinDelay` then show `symbolId`.
-        
+
         setDisplaySymbol(symbolId); // Snap to the determined result
         onStop(symbolId);
       }, spinDelay);
@@ -70,21 +70,21 @@ const Reel: React.FC<ReelProps> = ({ symbolId, isSpinning, spinDelay, onStop, hi
       ${internalSpinning ? 'blur-[1px]' : ''}
     `}>
       <div className={`flex flex-col items-center transition-transform ${internalSpinning ? 'animate-pulse' : ''}`}>
-        <Icon 
-          className={`w-10 h-10 md:w-12 md:h-12 ${SymbolConfig.color} ${highlight ? 'animate-bounce' : ''}`} 
+        <Icon
+          className={`w-10 h-10 md:w-12 md:h-12 ${SymbolConfig.color} ${highlight ? 'animate-bounce' : ''}`}
           strokeWidth={highlight ? 2.5 : 1.5}
         />
         {!internalSpinning && (
-           <span className="text-[10px] md:text-xs text-gray-500 mt-1 uppercase tracking-widest font-mono">
-             {SymbolConfig.name.split(' ')[0]}
-           </span>
+          <span className="text-[10px] md:text-xs text-gray-500 mt-1 uppercase tracking-widest font-mono">
+            {SymbolConfig.name.split(' ')[0]}
+          </span>
         )}
       </div>
-      
+
       {/* Scanline overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-20 pointer-events-none bg-[length:100%_4px,6px_100%] opacity-20"></div>
     </div>
   );
 };
 
-export default Reel;
+export default React.memo(Reel);
