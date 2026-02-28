@@ -282,6 +282,13 @@ const App: React.FC = () => {
               <Wallet className="w-4 h-4 text-cyber-neonGreen" />
               <span className="text-cyber-neonGreen font-bold font-mono">{balance.toFixed(0)}</span>
             </div>
+            <button
+              onClick={() => setShowAdmin(true)}
+              title="Access System Kernel"
+              className="p-2 text-gray-700 hover:text-cyber-neonCyan transition-colors rounded border border-gray-800 hover:border-cyber-neonCyan/50"
+            >
+              <SettingsIcon size={14} />
+            </button>
           </div>
         </header>
 
@@ -370,16 +377,6 @@ const App: React.FC = () => {
           onSpin={handleSpin}
           onOpenRules={() => setShowRules(true)}
         />
-
-        {/* Footer / Admin Trigger */}
-        <footer className="mt-8 w-full flex justify-center">
-          <button
-            onClick={() => setShowAdmin(true)}
-            className="text-[10px] text-gray-800 hover:text-cyber-neonCyan transition-colors uppercase tracking-widest flex items-center gap-1"
-          >
-            <SettingsIcon size={10} /> Access System Kernel
-          </button>
-        </footer>
 
       </main>
 
