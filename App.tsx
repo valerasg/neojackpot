@@ -6,6 +6,7 @@ import ControlPanel from './components/ControlPanel';
 import InstructionsModal from './components/InstructionsModal';
 import AdminPanel from './components/AdminPanel';
 import { generateWinLog } from './services/geminiService';
+import audioService from './services/audioService';
 import {
   GRID_SIZE,
   DEFAULT_BALANCE,
@@ -115,8 +116,10 @@ const App: React.FC = () => {
   const [showRules, setShowRules] = useState(false);
   const [spinCounter, setSpinCounter] = useState(0);
 
-  // Stable callback for reel stops
-  const handleReelStop = useCallback(() => { }, []);
+  // Stable callback for reel stops — plays a click sound each time a reel lands
+  const handleReelStop = useCallback(() => {
+    audioService.playReelStop();
+  }, []);
 
   // Win Evaluation Logic
   const evaluateGrid = useCallback((currentGrid: SymbolId[][], currentBet: number) => {
@@ -162,6 +165,9 @@ const App: React.FC = () => {
 
   const handleSpin = async () => {
     if (balance < bet || isSpinning) return;
+
+    audioService.playButtonClick();
+    audioService.playSpinStart();
 
     setBalance(prev => prev - bet);
     setIsSpinning(true);
@@ -230,13 +236,16 @@ const App: React.FC = () => {
         const topSymbolName = SYMBOLS[topSymbol].name;
 
         if (totalWin >= bet * 5) {
+          audioService.playBigWin();
           setAiLog("ANALYZING BREACH PATTERN...");
           const log = await generateWinLog(totalWin, topSymbolName);
           setAiLog(log);
         } else {
+          audioService.playWin(totalWin);
           setAiLog(`SUCCESS: ${totalWin.toFixed(0)} CREDITS EXTRACTED.`);
         }
       } else {
+        audioService.playLose();
         setAiLog("ACCESS DENIED. RETRY CONNECTION.");
       }
 
