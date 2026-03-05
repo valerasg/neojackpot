@@ -1,20 +1,22 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# NeoJackpot - Educational Slot Machine Simulator
 
-# Run and deploy your AI Studio app
+Welcome to the NeoJackpot project.
 
-This contains everything you need to run your app locally.
+## 🎯 Primary Goal
 
-View your app in AI Studio: https://ai.studio/apps/drive/16MtP8GaNpHVGefskfglLGRMgtmKMZSof
+The main objective of this project is strictly **educational**. We aim to demonstrate the mathematical and programmatic mechanisms behind slot machines—specifically, how systems can be designed and controlled to inevitably favor the house, ensuring a 100% win rate for the operator over the long term.
 
-## Run Locally
+By shedding light on these underlying systems, this project helps users make more informed decisions and better understand the reality of programmed probability in electronic gaming systems.
 
-**Prerequisites:**  Node.js
+*Please note: This repository is intended solely for learning, research, and awareness. It is not intended to encourage gambling.*
 
+## 📚 Educational Value
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Through this demonstration, you can learn about:
+- **Pseudo-Random Number Generation (PRNG):** How "randomness" is produced and managed in software.
+- **Return to Player (RTP) & House Edge:** The mathematical principles that guarantee long-term casino profit.
+- **Outcome Weighting:** How payout frequencies and symbols are programmatically weighted and controlled.
+
+## ⚖️ Disclaimer
+
+This software is provided for educational and demonstrative purposes only. It does not replicate any specific real-world proprietary platform, but rather explores the general concepts discussed in software probability and game development. Please stay informed about the programmed nature of such machines.
