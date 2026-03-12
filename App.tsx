@@ -5,7 +5,7 @@ import Reel from './components/Reel';
 import ControlPanel from './components/ControlPanel';
 import InstructionsModal from './components/InstructionsModal';
 import AdminPanel from './components/AdminPanel';
-import { generateWinLog } from './services/geminiService';
+import { getWinMessage } from './services/winMessages';
 import audioService from './services/audioService';
 import {
   GRID_SIZE,
@@ -237,9 +237,7 @@ const App: React.FC = () => {
 
         if (totalWin >= bet * 5) {
           audioService.playBigWin();
-          setAiLog("ANALYZING BREACH PATTERN...");
-          const log = await generateWinLog(totalWin, topSymbolName);
-          setAiLog(log);
+          setAiLog(getWinMessage(totalWin, topSymbolName));
         } else {
           audioService.playWin(totalWin);
           setAiLog(`SUCCESS: ${totalWin.toFixed(0)} CREDITS EXTRACTED.`);

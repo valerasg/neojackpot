@@ -116,8 +116,8 @@ const InstructionsModal: React.FC<InstructionsModalProps> = ({ isOpen, onClose }
           </section>
 
           <section>
-            <h3 className="text-white font-bold mb-2 uppercase text-xs tracking-widest border-l-2 border-cyber-neonPink pl-2">AI Integration</h3>
-            <p className="text-gray-500 text-xs">Big wins trigger the Neural Net (Gemini AI) to generate a unique system breach log.</p>
+            <h3 className="text-white font-bold mb-2 uppercase text-xs tracking-widest border-l-2 border-cyber-neonPink pl-2">System Logs</h3>
+            <p className="text-gray-500 text-xs">Big wins trigger the Neural Net to generate a unique system breach log in the terminal.</p>
           </section>
         </div>
 

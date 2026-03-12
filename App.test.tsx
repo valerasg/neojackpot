@@ -2,10 +2,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import App from './App';
 
-// Mock geminiService because we don't want real API calls in tests
-vi.mock('./services/geminiService', () => ({
-    generateWinLog: vi.fn().mockResolvedValue("MOCKED AI LOG ENTRY")
-}));
 
 describe('App Component - Neon Jackpots', () => {
     it('renders the initial header correctly', () => {
