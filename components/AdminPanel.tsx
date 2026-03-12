@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Settings, History, Activity, X, Save, RotateCcw } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Settings, History, Activity, X, Save, RotateCcw, CheckCircle, AlertTriangle } from 'lucide-react';
 import { GameSettings, GameStats, SpinHistoryItem } from '../types';
 
 interface AdminPanelProps {
@@ -24,11 +24,46 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'settings' | 'history' | 'stats'>('settings');
   const [localSettings, setLocalSettings] = useState<GameSettings>(settings);
+  const [showSaveToast, setShowSaveToast] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
+
+  // Sync local settings when the panel opens with new props
+  useEffect(() => {
+    if (isOpen) {
+      setLocalSettings(settings);
+    }
+  }, [isOpen, settings]);
+
+  // Check if there are unsaved changes
+  const hasUnsavedChanges = useCallback(() => {
+    return localSettings.winChance !== settings.winChance ||
+           localSettings.maxWinCap !== settings.maxWinCap;
+  }, [localSettings, settings]);
 
   if (!isOpen) return null;
 
   const handleSave = () => {
     onUpdateSettings(localSettings);
+    setShowSaveToast(true);
+    setTimeout(() => setShowSaveToast(false), 2000);
+  };
+
+  const handleClose = () => {
+    if (hasUnsavedChanges()) {
+      setShowExitConfirm(true);
+    } else {
+      onClose();
+    }
+  };
+
+  const handleConfirmExit = () => {
+    setShowExitConfirm(false);
+    setLocalSettings(settings); // revert changes
+    onClose();
+  };
+
+  const handleCancelExit = () => {
+    setShowExitConfirm(false);
   };
 
   const handleResetSettings = () => {
@@ -46,7 +81,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
           <h2 className="text-lg font-bold text-gray-200 flex items-center gap-2">
             <Settings className="w-5 h-5 text-cyber-neonPink" /> SYSTEM_ADMIN_CONSOLE
           </h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors">
+          <button onClick={handleClose} className="text-gray-500 hover:text-white transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -218,7 +253,44 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
           )}
 
         </div>
+
+        {/* Save Toast Notification */}
+        {showSaveToast && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-cyber-neonGreen/10 border border-cyber-neonGreen text-cyber-neonGreen px-4 py-2 rounded-lg flex items-center gap-2 animate-pulse shadow-lg shadow-cyber-neonGreen/20">
+            <CheckCircle size={16} />
+            <span className="text-sm font-bold uppercase tracking-wider">Settings saved successfully</span>
+          </div>
+        )}
       </div>
+
+      {/* Exit Confirmation Modal */}
+      {showExitConfirm && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <div className="bg-gray-900 border border-gray-700 rounded-xl p-6 max-w-sm w-full shadow-2xl font-mono text-sm space-y-4">
+            <div className="flex items-center gap-2 text-yellow-400">
+              <AlertTriangle size={20} />
+              <h3 className="text-base font-bold uppercase">Unsaved Changes</h3>
+            </div>
+            <p className="text-gray-400 text-xs">
+              You have unsaved modifications to the system parameters. Exiting now will discard all changes.
+            </p>
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={handleConfirmExit}
+                className="flex-1 bg-red-500/10 border border-red-500 text-red-400 py-2 rounded hover:bg-red-500/20 font-bold uppercase text-xs"
+              >
+                Discard & Exit
+              </button>
+              <button
+                onClick={handleCancelExit}
+                className="flex-1 bg-gray-800 border border-gray-600 text-gray-300 py-2 rounded hover:bg-gray-700 font-bold uppercase text-xs"
+              >
+                Go Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
